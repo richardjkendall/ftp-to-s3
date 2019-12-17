@@ -86,7 +86,7 @@ def main():
   handler.authorizer = authorizer
   handler.tempdir = tempfolder_name
   handler.bucket_name = os.environ["BUCKET_NAME"]
-  #handler.passive_ports = range(60000, 65535)
+  handler.passive_ports = range(60000, 61000)
   server = ThreadedFTPServer(("", 10021), handler)
   server.serve_forever()
 
