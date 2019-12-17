@@ -86,9 +86,30 @@ def main():
   handler.authorizer = authorizer
   handler.tempdir = tempfolder_name
   handler.bucket_name = os.environ["BUCKET_NAME"]
+  if "MASQ_ADDR" in os.environ:
+    handler.masquerade_address = os.environ["MASQ_ADDR"]
   handler.passive_ports = range(60000, 61000)
   server = ThreadedFTPServer(("", 10021), handler)
   server.serve_forever()
 
+def check_environment():
+  """
+  Make sure we have the environment variables we need to run
+  Exit with code 1 if not
+  """
+  bad = False
+  if "FTP_USERNAME" not in os.environ:
+    bad = True
+    logging.warning("Need FTP_USERNAME in environment")
+  if "FTP_PASSWORD" not in os.environ:
+    bad = True
+    logging.warning("Need FTP_PASSWORD in environment")
+  if "BUCKET_NAME" not in os.environ:
+    bad = True
+    logging.warning("Need BUCKET_NAME in environment")
+  if bad:
+    exit(1)
+
 if __name__ == "__main__":
+  check_environment()
   main()
