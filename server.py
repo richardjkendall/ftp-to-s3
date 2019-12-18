@@ -62,6 +62,8 @@ class S3UploadHandler(FTPHandler):
       object_name = file_key
     ):
       logging.info("Uploaded file to S3")
+      os.remove(file)
+      logging.info("Removed file from container")
     else:
       logging.error("File failed to upload")
     pass
